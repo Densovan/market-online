@@ -7,12 +7,16 @@ const categorySchema = new mongoose.Schema(
       required: true,
       ref: "user",
     },
-    product: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "product",
-      },
-    ],
+    // product: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "product",
+    //   },
+    // ],
+    slug: {
+      type: String,
+      required: true,
+    },
     name: {
       type: String,
       required: true,

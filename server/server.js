@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
+const categoryRoute = require("./routes/category");
 
 const app = express();
 dotenv.config();
@@ -28,6 +29,7 @@ app.use(
 //=========>>Route<<==============
 app.use("/api", authRoute);
 app.use("/api", userRoute);
+app.use("/api", categoryRoute);
 //========>>Dastabase<<========
 connectDB();
 
