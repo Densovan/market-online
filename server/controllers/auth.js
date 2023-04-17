@@ -24,8 +24,9 @@ exports.register = async (req, res) => {
     const accessToken = jwt.sign(
       {
         UserInfo: {
+          id: foundUser._id,
           fullname: foundUser.fullname,
-          roles: foundUser.role,
+          role: foundUser.role,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
@@ -49,7 +50,6 @@ exports.register = async (req, res) => {
     // Send accessToken containing username and roles
     res.json({ accessToken, foundUser });
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ msg: "server error" });
   }
 };
@@ -74,8 +74,9 @@ exports.login = async (req, res) => {
     const accessToken = jwt.sign(
       {
         UserInfo: {
+          id: foundUser._id,
           fullname: foundUser.fullname,
-          roles: foundUser.role,
+          role: foundUser.role,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
@@ -106,12 +107,9 @@ exports.login = async (req, res) => {
 // @desc Refresh
 // @route GET /auth/refresh
 // @access Public - because access token has expired
-
 exports.refresh = async (req, res) => {
   try {
     const cookies = req.cookies;
-
-    console.log(cookies?.jwt, "cookies");
 
     if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
 
@@ -133,8 +131,9 @@ exports.refresh = async (req, res) => {
         const accessToken = jwt.sign(
           {
             UserInfo: {
-              username: foundUser.username,
-              roles: foundUser.role,
+              id: foundUser._id,
+              fullname: foundUser.fullname,
+              role: foundUser.role,
             },
           },
           process.env.ACCESS_TOKEN_SECRET,
@@ -145,6 +144,16 @@ exports.refresh = async (req, res) => {
       }
     );
   } catch (error) {
-    console.log(error.message);
+    return res.status(500).json({ msg: "server error" });
   }
+};
+
+// @desc Logout
+// @route POST /auth/logout
+// @access Public - just to clear cookie if exists
+exports.logout = (req, res) => {
+  const cookies = req.cookies;
+  if (!cookies?.jwt) return res.sendStatus(204); //No content
+  res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+  res.json({ message: "Cookie cleared" });
 };

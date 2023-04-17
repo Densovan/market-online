@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
+const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(
 );
 //=========>>Route<<==============
 app.use("/api", authRoute);
+app.use("/api", userRoute);
 //========>>Dastabase<<========
 connectDB();
 
