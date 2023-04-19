@@ -21,6 +21,10 @@ const ProductSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    discount: {
+      type: Number,
+      required: true,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -44,6 +48,10 @@ const ProductSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
+    },
+    show: {
+      type: Boolean,
+      default: true,
     },
   },
   {
