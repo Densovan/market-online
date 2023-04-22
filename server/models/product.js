@@ -53,6 +53,10 @@ const ProductSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    categorySlug: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
