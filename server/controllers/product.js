@@ -3,7 +3,7 @@ const Category = require("../models/category");
 const slug = require("slugo");
 // @desc create new product
 // @route CREATE /product/create
-// @access private
+// @access private/admin
 exports.create_product = async (req, res) => {
   const {
     name,
@@ -46,7 +46,7 @@ exports.create_product = async (req, res) => {
 
 // @desc updatew product
 // @route updaste /product/update/id
-// @access private
+// @access private/admin
 exports.update_product = async (req, res) => {
   try {
     const {
@@ -136,6 +136,64 @@ exports.get_product_by_categorySlug = async (req, res) => {
       .populate("category");
     const count = products.length;
     return res.status(200).json({ products, category, count });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
+// @desc Query products Search by Keyword
+// @route GET /product/keyword
+// @access public
+exports.search_products = async (req, res) => {
+  try {
+    const { keyword } = req.params;
+    const result = await Product.find({
+      $or: [
+        { name: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+      ],
+    });
+    return res.status(200).json({ result });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
+// @desc Query filter products
+// @route POST /product/
+// @access public
+exports.filter_products = async (req, res) => {
+  try {
+    const { checked, radio } = req.body;
+    let args = {};
+    if (checked) args.category = checked;
+    if (radio) args.price = { $gte: radio[0], $lte: radio[1] };
+    const products = await Product.find(args);
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
+// @desc Query similar products
+// @route GET /product/
+// @access public
+exports.similar_product = async (req, res) => {
+  try {
+    const { pid, cid } = req.params;
+    const products = await Product.find({
+      category: cid,
+      _id: { $ne: pid },
+    })
+      .limit(6)
+      .populate("category");
+    res.status(200).json({
+      success: true,
+      products,
+    });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }

@@ -8,6 +8,7 @@ const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const categoryRoute = require("./routes/category");
 const productRoute = require("./routes/product");
+const cartRoute = require("./routes/cart");
 
 const app = express();
 dotenv.config();
@@ -32,6 +33,7 @@ app.use("/api", authRoute);
 app.use("/api", userRoute);
 app.use("/api", categoryRoute);
 app.use("/api", productRoute);
+app.use("/api", cartRoute);
 //========>>Dastabase<<========
 connectDB();
 
