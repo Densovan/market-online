@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
-const cartSchema = new mongoose.Schema(
+const orderSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "user",
+      ref: "User",
     },
-    cartItems: [
+    orderItems: [
       {
         name: { type: String, required: true },
         qty: { type: Number, required: true },
@@ -20,10 +20,15 @@ const cartSchema = new mongoose.Schema(
         },
       },
     ],
+    status: {
+      type: String,
+      default: "Not Process",
+      enum: ["Not Process", "Processing", "Shipped", "deliverd", "cancel"],
+    },
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model("cart", cartSchema);
+module.exports = mongoose.model("order", orderSchema);
