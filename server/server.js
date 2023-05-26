@@ -7,6 +7,7 @@ const connectDB = require("./config/db");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const categoryRoute = require("./routes/category");
+const subCategoryRoute = require("./routes/sub-category");
 const productRoute = require("./routes/product");
 const cartRoute = require("./routes/cart");
 const uploadFile = require("./routes/file-upload");
@@ -32,6 +33,7 @@ app.use(
 app.use("/api", authRoute);
 app.use("/api", userRoute);
 app.use("/api", categoryRoute);
+app.use("/api", subCategoryRoute);
 app.use("/api", productRoute);
 app.use("/api", cartRoute);
 app.use("/api", uploadFile);
