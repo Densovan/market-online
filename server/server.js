@@ -9,7 +9,7 @@ const authRoute = require("./routes/auth");
 const categoryRoute = require("./routes/category");
 const productRoute = require("./routes/product");
 const cartRoute = require("./routes/cart");
-
+const uploadFile = require("./routes/file-upload");
 const app = express();
 dotenv.config();
 //============>Middleware<=============
@@ -34,6 +34,7 @@ app.use("/api", userRoute);
 app.use("/api", categoryRoute);
 app.use("/api", productRoute);
 app.use("/api", cartRoute);
+app.use("/api", uploadFile);
 //========>>Dastabase<<========
 connectDB();
 
