@@ -98,7 +98,7 @@ exports.login = async (req, res) => {
     });
 
     // Send accessToken containing username and roles
-    res.json({ accessToken });
+    res.json({ accessToken, role: foundUser.role });
   } catch (error) {
     return res.status(500).json({ msg: "server error" });
   }
@@ -140,7 +140,7 @@ exports.refresh = async (req, res) => {
           { expiresIn: "15m" }
         );
 
-        res.json({ accessToken });
+        res.json({ accessToken, role: foundUser.role });
       }
     );
   } catch (error) {
