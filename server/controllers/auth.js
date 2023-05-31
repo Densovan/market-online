@@ -151,9 +151,25 @@ exports.refresh = async (req, res) => {
 // @desc Logout
 // @route POST /auth/logout
 // @access Public - just to clear cookie if exists
-exports.logout = (req, res) => {
-  const cookies = req.cookies;
-  if (!cookies?.jwt) return res.sendStatus(204); //No content
-  res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
-  res.json({ message: "Cookie cleared" });
+exports.logout = async (req, res) => {
+  try {
+    res.cookie("jwt", "", {
+      httpOnly: true,
+      expires: new Date(0),
+      secure: true,
+      sameSite: "none",
+    });
+    return res.json({ msg: "Logged Out!" });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
 };
+// exports.logout = (req, res) => {
+//   //on client also remove accessToken
+//   // const cookies = req.cookies;
+//   // if (!cookies?.jwt) return res.sendStatus(204); //No content
+//   res
+//     .status(202)
+//     .clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+//   res.status(204).json({ message: "Cookie cleared" });
+// };
